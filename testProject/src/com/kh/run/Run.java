@@ -45,7 +45,7 @@ public class Run {
 		// 실행할 SQL문 (완성형태로 넣어야한다!)	=> 세미콜론 없어야함!!
 		// INSERT INTO TEST VALUES ('강보람',20,'서울시 관악구'); 이런 형태로 해야한다!!
 		
-		String sql = "INSERT INTO TEST VALUES('" + name + "', " + age + ", '" + address + "')";
+		String sql = "INSERT INTO MEMBER VALUES('" + name + "', " + age + ", '" + address + "')";
 		//System.out.println(sql);
 		
 		
