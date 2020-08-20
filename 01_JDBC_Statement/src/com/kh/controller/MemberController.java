@@ -1,5 +1,7 @@
 package com.kh.controller;
 
+import java.util.ArrayList;
+
 import com.kh.model.dao.MemberDao;
 import com.kh.model.vo.Member;
 import com.kh.view.MemberMenu;
@@ -28,4 +30,21 @@ public class MemberController {
 		}
 	}
 
+	
+	/**
+	 *  사용자의 회원전체정보조회 요청 처리 메소드
+	 */
+	public void selectList() {
+		
+		ArrayList<Member> list = new MemberDao().selectList();
+		
+		// 조회 결과가 있는지 없는지 판단후 사용자가 보게될  view 지정
+		if(list.isEmpty()) {	// 텅빈 리스트 => 조회 결과 없음
+			new MemberMenu().displayNoData("전체 조회 결과 없음!");
+			
+		}else {	// 뭐라도 조회됨!
+			new MemberMenu().displayMemberList(list);
+		}
+		
+	}
 }	

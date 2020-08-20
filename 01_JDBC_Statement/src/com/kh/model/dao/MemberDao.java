@@ -1,6 +1,7 @@
 package com.kh.model.dao;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 import com.kh.model.vo.Member;
 
@@ -104,6 +105,86 @@ public class MemberDao {
 	
 		return result;
 	
+		
+		
+	}
+	
+	public ArrayList<Member> selectList() {//select문	=> ResultSet객체로 받음! (여러행)		
+		
+		// 필요한 변수 셋팅
+		// 처리된 결과 (조회된 회원들(여러회원)	== 여러행)들을 담아줄 ArrayList생성!
+		ArrayList<Member> list = new ArrayList<>();
+		
+		Connection conn = null;	// DB 연결정보 담는 객체
+		Statement stmt = null;	// SQL문 실행 및 결과 받는 객체
+		ResultSet rset = null;	// SELECT문 실행시 조회 결과값 담는 객체
+		
+		String sql = "SELECT * FROM MEMBER";
+		
+		
+		try {
+			//1) jdbc driver 등록
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			
+			//2) Connection 객체 생성
+			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","JDBC","JDBC");
+			
+			//3) Statement 객체 생성
+			stmt = conn.createStatement();
+			
+			//4, 5) SQL문 전달해서 실행 결과 받기! (ResultSet 객체)
+			rset = stmt.executeQuery(sql);	// select문은 executeQuery 메소드 사용!
+											// dml문(insert, update, delete)은 executeUpdate 메소드 사용!
+			
+			
+			
+			//6_1
+			while(rset.next()) {
+				
+				
+				// 현재 rset 커서가 가리키고 있는 한 행 데이터 싹 뽑아서 Member 객체에 담기!
+				Member m = new Member();
+				// rset으로부터 어떤 컬럼에 해당하는 값을 뽑을 건지 제시!! (컬럼명!! 대소문자 가리지 않음!)
+				m.setUserNo(rset.getInt("USERNO"));
+				m.setUserId(rset.getString("USERID"));
+				m.setUserPwd(rset.getString("USERPWD"));
+				m.setUserName(rset.getString("USERNAME"));
+				m.setGender(rset.getString("GENDER"));
+				m.setAge(rset.getInt("AGE"));
+				m.setEmail(rset.getString("EMAIL"));
+				m.setPhone(rset.getString("PHONE"));
+				m.setAddress(rset.getString("ADDRESS"));
+				m.setHobby(rset.getString("HOBBY"));
+				m.setEnrollDate(rset.getDate("ENROLLDATE"));
+				
+				// 한 행에 대해 한 Member객체애 담는것 끝!
+				list .add(m);	// 리스트에 해당 회원 객채 차곡차곡 담기
+				
+			}
+			
+			
+			
+			
+			
+			
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			
+			//7) 다 쓴 자원 반납
+			try {
+				rset.close();
+				stmt.close();
+				conn.close();
+				
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return list;
 		
 		
 	}
