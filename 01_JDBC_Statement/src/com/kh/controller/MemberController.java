@@ -47,4 +47,73 @@ public class MemberController {
 		}
 		
 	}
+	
+	
+	
+	/**
+	 * 사용자의 아이디로 회원 검색 요청 처리 메소드
+	 * @param userId	--> 검색하고싶은 회원 아이디
+	 */
+	public void selectByUserId(String userId) {
+		
+		Member m = new MemberDao().selectByUserId(userId);
+		
+		if(m == null) {	// 검색결과 없음
+			new MemberMenu().displayNoData("검색 결과 없음!");
+			
+		} else {	// 조회가 되었을 경우
+			new MemberMenu().displayMember(m);
+		}
+		
+	}
+	
+	
+	/**
+	 * 사용자의 회원명(키워드) 검색 요청 메소드
+	 * @param keyword	--> 사용자가 검색하는 키워드
+	 */
+	public void selectByUserName(String keyword) {
+		
+		ArrayList<Member> list = new MemberDao().selectByUserName(keyword);
+		
+		if(list.isEmpty()) {	//  회원이 없음
+			
+			new MemberMenu().displayNoData("조회 결과 없음!");
+			
+		}else {	// 회원이 있음!
+			new MemberMenu().displayMemberList(list);
+		}
+			
+	}
+	
+	
+	/**
+	 * 사용자 정보 변경 요청 처리 메소드
+	 * @param m	--> 변경하고자 할 회원 아이디, 변경할 정보(암호, 이메일, 전화번호, 주소)
+	 */
+	public void updateMember(Member m) {
+		
+		int result = new MemberDao().updateMember(m);
+		
+		if(result > 0) {	// 정보 변경 성공		
+			
+			new MemberMenu().displaySucess("정보 변경 성공!");
+			
+		}else {			// 정보 변경 실패
+			
+			new MemberMenu().displayFail("정보 변경 실패...");
+		}
+		
+	}
+	
+	public void deleteMember(String userId) {
+		
+	 int result = new MemberDao().deleteMember(userId);
+		
+	 if(result > 0) {
+		 new MemberMenu().displaySucess("회원 탈퇴 완료!");
+	 }else {
+		 new MemberMenu().displayFail("회원 탈퇴 실패..");
+	 }
+	}
 }	

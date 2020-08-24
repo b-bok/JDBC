@@ -73,6 +73,8 @@ public class Member {
 		this.hobby = hobby;
 	}
 
+	
+
 	// s, r
 	public int getUserNo() {
 		return userNo;
